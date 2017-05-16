@@ -10,8 +10,8 @@ class review_spyder(Spider):
     start_urls = ["http://www.androidcentral.com/search/xperia%20xz?query=xperia%20xz"]
 
     def parse(self, response):
-        links = response.xpath('//*[@id="grid_items"]/div[1]/div/h2/a').extract()
-        print(links)
+        links = response.xpath('//*[@id="grid_items"]/div[1]/div/h2/a/@href').extract()
+        print("Links:",links)
         # We stored already crawled links in this list
         crawledLinks = []
 
@@ -29,6 +29,9 @@ class review_spyder(Spider):
 
         titles = response.xpath(
             '//div[contains(@class, "teaser_main")]/h2/a/text()').extract()
+        paginas = response.xpath('//div[contains(@class, "teaser_main")]/h2/a/@href').extract()
+        for pagina in paginas:
+            print("página:",pagina)
         for title in titles:
             item = androidCentralItem()
             item["title"] = title
