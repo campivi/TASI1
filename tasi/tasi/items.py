@@ -9,3 +9,5 @@ import scrapy
 
 class androidCentralItem(scrapy.Item):
   title = scrapy.Field()
+  content = scrapy.Field()
+

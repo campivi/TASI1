@@ -14,22 +14,27 @@ class review_spyder(Spider):
 
     def parse(self, response):
         links = response.xpath(
-            '//*[@id="grid_items"]/div/div/h2/a/@href').extract()
+            '//*[@id="grid_items"]/div[1]/div/h2/a/@href').extract()
         print("Links:", links)
         # We stored already crawled links in this list
         crawledLinks = []
-        linkPattern = re.compile("^http://www.androidcentral.com/+")
+
         for link in links:
             # If it is a proper link and is not checked yet, yield it to the
             # Spider
-            if (linkPattern.match(link)) and (link not in crawledLinks):
+            if link not in crawledLinks:
                 #link = "http://www.androidcentral.com" + link
                 crawledLinks.append(link)
-                yield Request(link, self.parse_page)
-
-    def parse_page(self, response):
-        title = response.xpath(
+                yield Request(link, self.parse)
+        titles2 = response.xpath(
             '//*[@id="article-header"]/section/div/div/section/h1/text()').extract()
-        item = androidCentralItem()
-        item["title"] = title[0]
-        yield item
+        titles = response.xpath(
+            '//div[contains(@class, "teaser_main")]/h2/a/text()').extract()
+        paginas = response.xpath(
+            '//div[contains(@class, "teaser_main")]/h2/a/@href').extract()
+        for pagina in paginas:
+            print("página:", pagina)
+        for title in titles:
+            item = androidCentralItem()
+            item["title"] = title
+            yield item
