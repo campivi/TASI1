@@ -1,22 +1,35 @@
 from scrapy.spiders import Spider
-from tutsplus.items import TutsplusItem
-from scrapy.http    import Request
+from scrapy.http import Request
+from tasi.items import androidCentralItem
+import re
 
 
-class QuotesSpider(scrapy.Spider):
-    name = "quotes"
-
-    def start_requests(self):
-        urls = [
-            'http://quotes.toscrape.com/page/1/',
-            'http://quotes.toscrape.com/page/2/',
-        ]
-        for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse)
+class review_spyder(Spider):
+    name = "androidcentral"
+    allowed_domains = ["androidcentral.com"]
+    start_urls = ["http://www.androidcentral.com/search/xperia%20xz?query=xperia%20xz"]
 
     def parse(self, response):
-        page = response.url.split("/")[-2]
-        filename = 'quotes-%s.html' % page
-        with open(filename, 'wb') as f:
-            f.write(response.body)
-        self.log('Saved file %s' % filename)
+        links = response.xpath('//*[@id="grid_items"]/div[1]/div/h2/a').extract()
+        print(links)
+        # We stored already crawled links in this list
+        crawledLinks = []
+
+        # Pattern to check proper link
+        # I only want to get the tutorial posts
+        #linkPattern = re.compile("^\/tutorials\?page=\d+")
+
+        for link in links:
+            # If it is a proper link and is not checked yet, yield it to the
+            # Spider
+            if link not in crawledLinks:
+                #link = "http://www.androidcentral.com" + link
+                crawledLinks.append(link)
+                yield Request(link, self.parse)
+
+        titles = response.xpath(
+            '//div[contains(@class, "teaser_main")]/h2/a/text()').extract()
+        for title in titles:
+            item = androidCentralItem()
+            item["title"] = title
+            yield item
