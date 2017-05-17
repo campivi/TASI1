@@ -30,6 +30,13 @@ class review_spyder(Spider):
     def parse_page(self, response):
         title = response.xpath(
             '//*[@id="article-header"]/section/div/div/section/h1/text()').extract()
+        #Sacar caracteres raros 
+        contents = response.xpath('//*[@class="field-item even"]/div').extract()
+        contenido = "" 
+        for content in contents:
+            description = re.sub('<.*?>', '', content)
+            contenido = contenido + " " + description
         item = androidCentralItem()
         item["title"] = title[0]
+        item["content"] = contenido
         yield item
