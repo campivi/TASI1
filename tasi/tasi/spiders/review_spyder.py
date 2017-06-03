@@ -31,8 +31,8 @@ class review_spyder(Spider):
         title = response.xpath(
             '//*[@id="article-header"]/section/div/div/section/h1/text()').extract()
         #Sacar caracteres raros 
-        contents = response.xpath('//*[@class="field-item even"]/div').extract()
-        contenido = "" 
+        contents = response.xpath('//p').extract()
+        contenido = ""  
         for content in contents:
             description = re.sub('<.*?>', '', content)
             contenido = contenido + " " + description
