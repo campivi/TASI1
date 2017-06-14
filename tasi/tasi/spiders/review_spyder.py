@@ -7,29 +7,29 @@ import re
 
 
 class review_spyder(Spider):
-    name = "androidcentral"
-    allowed_domains = ["androidcentral.com"]
+    name = "libre"
+    allowed_domains = ["elandroidelibre.elespanol.com"]
     start_urls = [
-        "http://www.androidcentral.com/search/xperia%20xz?query=xperia%20xz"]
+        "https://elandroidelibre.elespanol.com/?s=xperia+xz"]
 
     def parse(self, response):
         links = response.xpath(
-            '//*[@id="grid_items"]/div/div/h2/a/@href').extract()
+            '/html/body/div[4]/section/article/a/@href').extract()
         print("Links:", links)
         # We stored already crawled links in this list
         crawledLinks = []
-        linkPattern = re.compile("^http://www.androidcentral.com/+")
+        linkPattern = re.compile("^https://elandroidelibre.elespanol.com/+")
         for link in links:
             # If it is a proper link and is not checked yet, yield it to the
             # Spider
             if (linkPattern.match(link)) and (link not in crawledLinks):
-                #link = "http://www.androidcentral.com" + link
+                #link = "https://elandroidelibre.elespanol.com" + link
                 crawledLinks.append(link)
                 yield Request(link, self.parse_page)
 
     def parse_page(self, response):
         title = response.xpath(
-            '//*[@id="article-header"]/section/div/div/section/h1/text()').extract()
+            '//*[@id="singlePostTitle"]/a').extract()
         #Sacar caracteres raros 
         contents = response.xpath('//p').extract()
         contenido = ""  
