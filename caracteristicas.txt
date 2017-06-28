@@ -15,17 +15,17 @@ Xiaomi Mi6
 Oneplus 3T
 
 Fuentes:
-http://www.androidcentral.com
 https://elandroidelibre.elespanol.com
 https://andro4all.com/
 http://omicrono.elespanol.com/
 https://www.xataka.com/
-https://www.cnet.com/news/
 https://hipertextual.com
-https://www.movilzona.es
 
+http://www.androidcentral.com
+https://www.cnet.com/news/
 http://www.phonearena.com
 http://www.gsmarena.com
 http://www.androidauthority.com
 http://www.techradar.com
 http://computerhoy.com
+https://www.movilzona.es
