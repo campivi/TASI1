@@ -7,11 +7,11 @@ Pantalla
 Cámara
 
 Celulares:
-Sony Xperia XZ
+-Sony Xperia XZ
 Samsung Galaxy S8
 LG G6
 Huawei P10
-Xiaomi Mi6
+-Xiaomi Mi6
 Oneplus 3T
 
 Fuentes:

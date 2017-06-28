@@ -17,13 +17,13 @@ def tiene_palabra_importante(oracion, llave):
             si_esta = True
     return si_esta
 
-def texto_traducir(archivo):
+def generar_oraciones(archivo):
     """
     Función que traduce el texto a inglés
     """
     translator = Translator()
     contador = 0
-    salida = open('Oraciones_Sony.csv', "w")
+    salida = open('Oraciones_'+archivo, "w")
     writer = csv.writer(salida, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     with open(archivo, 'r') as abierto:
         reader = csv.reader(abierto)
@@ -54,4 +54,4 @@ def texto_traducir(archivo):
                         if tiene_palabra_importante(oracion, llave):
                             writer.writerow([oracion, llave])
 
-texto_traducir('Sony.csv')
+generar_oraciones('Xiaomi.csv')
