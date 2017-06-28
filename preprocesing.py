@@ -8,12 +8,14 @@ lista_palabras = [
     "processor", "ram", "storage", "memory", "battery", "screen", "camera", "display"
     ]
 
-def tiene_palabra_importante(oracion):
+def tiene_palabra_importante(oracion, llave):
     tokens = nltk.word_tokenize(oracion.lower())
+    si_esta = False
     for token in tokens:
         if token in lista_palabras:
-            return True
-    return False
+            llave.append(token)
+            si_esta = True
+    return si_esta
 
 def texto_traducir(archivo):
     """
@@ -21,8 +23,8 @@ def texto_traducir(archivo):
     """
     translator = Translator()
     contador = 0
-    salida  = open('Oraciones_Sony.csv', "w")
-    writer = csv.writer(salida, delimiter =',',quotechar ='"',quoting=csv.QUOTE_MINIMAL)
+    salida = open('Oraciones_Sony.csv', "w")
+    writer = csv.writer(salida, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     with open(archivo, 'r') as abierto:
         reader = csv.reader(abierto)
         for row in reader:
@@ -36,16 +38,20 @@ def texto_traducir(archivo):
                         oracion = re.sub(r'[\W]', ' ', oracion)
                         oracion = oracion.replace('\n', ' ')
                         oracion = oracion.replace('\t', ' ')
+                        oracion = oracion.replace('\r', ' ')
                         traducido = translator.translate(oracion)
-                        if tiene_palabra_importante(traducido.text):
-                            writer.writerow([traducido.text])
+                        llave = []
+                        if tiene_palabra_importante(traducido.text, llave):
+                            writer.writerow([traducido.text, llave])
             else:
                 for oracion in oraciones:
                     if len(oracion) > 1:
                         oracion = re.sub(r'[\W]', ' ', oracion)
                         oracion = oracion.replace('\n', ' ')
                         oracion = oracion.replace('\t', ' ')
-                        if tiene_palabra_importante(oracion):
-                            writer.writerow([oracion])
+                        oracion = oracion.replace('\r', ' ')
+                        llave = []
+                        if tiene_palabra_importante(oracion, llave):
+                            writer.writerow([oracion, llave])
 
 texto_traducir('Sony.csv')
